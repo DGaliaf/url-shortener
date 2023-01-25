@@ -20,7 +20,12 @@ func NewReductionService(storage *redis.ReductionStorage) *ReductionService {
 
 func (r ReductionService) CreateShortUrl(ctx context.Context, dto CreateShortUrlDTO) (string, error) {
 	reduction := entities.Reduction{
-		LongUrl: dto.LongUrl,
+		LongUrl:    dto.LongUrl,
+		CustomText: dto.CustomText,
+	}
+
+	if err := reduction.Validate(); err != nil {
+		return "", err
 	}
 
 	return r.storage.Add(ctx, reduction)

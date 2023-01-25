@@ -22,8 +22,6 @@ import (
 )
 
 // TODO: Test
-// TODO: CustomUrl
-// TODO: Long URL Validation
 
 type App struct {
 	cfg *config.Config

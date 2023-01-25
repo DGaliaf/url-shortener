@@ -3,12 +3,14 @@ module url-shorter
 go 1.19
 
 require (
+	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d
 	github.com/gin-gonic/gin v1.8.2
 	github.com/go-redis/redis/v9 v9.0.0-rc.2
 	github.com/ilyakaznacheev/cleanenv v1.4.2
 	github.com/itchyny/base58-go v0.2.0
 	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a
 	github.com/swaggo/gin-swagger v1.5.3
+	github.com/swaggo/swag v1.8.1
 	golang.org/x/sync v0.1.0
 )
 
@@ -35,7 +37,6 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
-	github.com/swaggo/swag v1.8.1 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3 // indirect
 	golang.org/x/net v0.4.0 // indirect

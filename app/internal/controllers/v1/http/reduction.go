@@ -46,27 +46,33 @@ func (r ReductionHandler) createShortUrl(c *gin.Context) {
 	var createShortUrlDTO d.CreateShortUrlDTO
 
 	if err := c.BindJSON(&createShortUrlDTO); err != nil {
-		// TODO: error handling (failed to unmarshal)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":      "failed",
+			"msg":         err.Error(),
 			"hashed_link": "",
 			"short_url":   "",
 		})
+
+		return
 	}
 
 	url, err := r.service.CreateShortUrl(c.Request.Context(), reduction.CreateShortUrlDTO(createShortUrlDTO))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":      "failed",
+			"msg":         err.Error(),
 			"hashed_link": "",
 			"short_url":   "",
 		})
+
+		return
 	}
 
 	hashedLink := strings.Split(url, "/")
 
 	c.JSON(http.StatusCreated, gin.H{
 		"status":      "success",
+		"msg":         "",
 		"hashed_link": hashedLink[len(hashedLink)-1],
 		"short_url":   url,
 	})
@@ -85,23 +91,29 @@ func (r ReductionHandler) getLongUrl(c *gin.Context) {
 	var getLongUrlDTO d.GetLongUrlDTO
 
 	if err := c.BindJSON(&getLongUrlDTO); err != nil {
-		// TODO: error handling (failed to unmarshal)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":   "failed",
+			"msg":      err.Error(),
 			"long_url": "",
 		})
+
+		return
 	}
 
 	url, err := r.service.GetLongUrl(c.Request.Context(), getLongUrlDTO.HashedLink)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":   "failed",
+			"msg":      err.Error(),
 			"long_url": "",
 		})
+
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":   "success",
+		"msg":      "",
 		"long_url": url,
 	})
 }
@@ -120,6 +132,7 @@ func (r ReductionHandler) redirect(c *gin.Context) {
 	if err != nil {
 		c.Writer.WriteHeader(http.StatusBadRequest)
 		c.Writer.Write([]byte("Failed to redirect"))
+
 		return
 	}
 

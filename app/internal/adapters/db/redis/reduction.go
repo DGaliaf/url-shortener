@@ -21,17 +21,41 @@ func NewReductionStorage(cfg *config.Config, db *redis.Client) *ReductionStorage
 func (r ReductionStorage) Add(ctx context.Context, reduction entities.Reduction) (string, error) {
 	link := shortener.GenerateShortLink(reduction.LongUrl)
 
+	shortUrl := fmt.Sprintf("http://%s:%d/%s", r.cfg.HTTP.IP, r.cfg.HTTP.Port, link)
+
+	if r.cfg.HTTP.IP == "0.0.0.0" {
+		shortUrl = fmt.Sprintf("http://localhost:%d/%s", r.cfg.HTTP.Port, link)
+	}
+
+	if reduction.CustomText != "" {
+		cachedUrl, err := r.Get(ctx, reduction.CustomText)
+		if err != nil {
+			if err != redis.Nil {
+				return "", err
+			}
+		}
+
+		if cachedUrl != "" {
+			shortUrl = fmt.Sprintf("http://%s:%d/%s", r.cfg.HTTP.IP, r.cfg.HTTP.Port, reduction.CustomText)
+			if r.cfg.HTTP.IP == "0.0.0.0" {
+				shortUrl = fmt.Sprintf("http://localhost:%d/%s", r.cfg.HTTP.Port, reduction.CustomText)
+			}
+
+			return shortUrl, nil
+		}
+
+		if err := r.db.Set(ctx, reduction.CustomText, reduction.LongUrl, 0).Err(); err != nil {
+			return "", err
+		}
+
+		return shortUrl, nil
+	}
+
 	cachedUrl, err := r.Get(ctx, link)
 	if err != nil {
 		if err != redis.Nil {
 			return "", err
 		}
-	}
-
-	shortUrl := fmt.Sprintf("http://%s:%d/%s", r.cfg.HTTP.IP, r.cfg.HTTP.Port, link)
-
-	if r.cfg.HTTP.IP == "0.0.0.0" {
-		shortUrl = fmt.Sprintf("http://localhost:%d/%s", r.cfg.HTTP.Port, link)
 	}
 
 	if cachedUrl != "" {
