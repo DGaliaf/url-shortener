@@ -21,7 +21,7 @@ import (
 	r "url-shorter/app/pkg/client/redis"
 )
 
-// TODO: Test
+// TODO: Tests
 
 type App struct {
 	cfg *config.Config
