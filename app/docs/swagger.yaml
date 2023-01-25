@@ -1,0 +1,70 @@
+definitions:
+  dto.CreateShortUrlDTO:
+    properties:
+      long_url:
+        type: string
+    type: object
+  dto.GetLongUrlDTO:
+    properties:
+      hashed_link:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /{hashed_link}:
+    get:
+      description: Redirect to original url
+      parameters:
+      - description: Hashed Link
+        in: path
+        name: hashed_link
+        required: true
+        type: string
+      responses:
+        "302":
+          description: Found
+        "400":
+          description: Bad Request
+      summary: Redirect to original url
+  /api/v1/createShortUrl/:
+    post:
+      consumes:
+      - application/json
+      description: Create short url
+      parameters:
+      - description: Create Short Url
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateShortUrlDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+      summary: Create short url
+  /api/v1/getLongUrl/:
+    post:
+      consumes:
+      - application/json
+      description: Create long url
+      parameters:
+      - description: Get Long Url
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GetLongUrlDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      summary: Create long url
+swagger: "2.0"

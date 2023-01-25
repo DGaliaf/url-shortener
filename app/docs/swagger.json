@@ -1,0 +1,111 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/v1/createShortUrl/": {
+            "post": {
+                "description": "Create short url",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create short url",
+                "parameters": [
+                    {
+                        "description": "Create Short Url",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateShortUrlDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/v1/getLongUrl/": {
+            "post": {
+                "description": "Create long url",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create long url",
+                "parameters": [
+                    {
+                        "description": "Get Long Url",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetLongUrlDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/{hashed_link}": {
+            "get": {
+                "description": "Redirect to original url",
+                "summary": "Redirect to original url",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Hashed Link",
+                        "name": "hashed_link",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Found"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.CreateShortUrlDTO": {
+            "type": "object",
+            "properties": {
+                "long_url": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.GetLongUrlDTO": {
+            "type": "object",
+            "properties": {
+                "hashed_link": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
