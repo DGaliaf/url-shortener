@@ -26,14 +26,14 @@ func NewReductionHandler(service *reduction.ReductionService) *ReductionHandler 
 func (r ReductionHandler) Register(router *gin.Engine) {
 	v1 := router.Group(api)
 	{
-		v1.POST(createShortUrl, r.createShortUrl)
-		v1.POST(getLongUrl, r.getLongUrl)
+		v1.POST(createShortUrl, r.CreateShortUrl)
+		v1.POST(getLongUrl, r.GetLongUrl)
 	}
 
 	router.GET(redirect, r.redirect)
 }
 
-// Create short url
+// CreateShortUrl Create short url
 // @Summary      Create short url
 // @Description  Create short url
 // @Produce      json
@@ -42,7 +42,7 @@ func (r ReductionHandler) Register(router *gin.Engine) {
 // @Success      201
 // @Failure      400
 // @Router      /api/v1/createShortUrl/ [post]
-func (r ReductionHandler) createShortUrl(c *gin.Context) {
+func (r ReductionHandler) CreateShortUrl(c *gin.Context) {
 	var createShortUrlDTO d.CreateShortUrlDTO
 
 	if err := c.BindJSON(&createShortUrlDTO); err != nil {
@@ -78,7 +78,7 @@ func (r ReductionHandler) createShortUrl(c *gin.Context) {
 	})
 }
 
-// Get long url
+// GetLongUrl Get long url
 // @Summary      Get long url
 // @Description  Get long url
 // @Produce      json
@@ -87,7 +87,7 @@ func (r ReductionHandler) createShortUrl(c *gin.Context) {
 // @Success      200
 // @Failure      400
 // @Router       /api/v1/getLongUrl/ [post]
-func (r ReductionHandler) getLongUrl(c *gin.Context) {
+func (r ReductionHandler) GetLongUrl(c *gin.Context) {
 	var getLongUrlDTO d.GetLongUrlDTO
 
 	if err := c.BindJSON(&getLongUrlDTO); err != nil {
